@@ -1,16 +1,16 @@
 <template>
-    <div class="project">
+    <div class="project" :class="{complete:project.complete}">
         <div class="flexing">
             <div><h3 @click="showDetail = !showDetail">{{project.title}}</h3></div>
             <div class="icon-con">
                 <i class="fa-solid fa-trash" @click="deleteProject"></i>
                 <i class="fa-solid fa-pen-to-square"></i>
-                <i class="fa-regular fa-square-check"></i>
+                <i class="fa-regular fa-square-check"  @click="completeProject"></i>
             </div>
         </div>
         
         <p v-if="showDetail">{{project.detail}}</p>
-       
+        {{ project.complete }}
     </div>
 </template>
 
@@ -31,6 +31,27 @@ export default {
         fetch(deleteRoute,{method:"DELETE"})
         .then(() => {
             this.$emit("delete",this.project.id)
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+       },
+
+       completeProject(){
+        let updateCompleteRoute = this.api+this.project.id;
+        fetch(updateCompleteRoute,{
+            method:"PATCH",
+            headers:{
+                "Content-Type" : "application/json"
+            },
+            body:JSON.stringify(
+               {
+                complete: !this.project.complete
+               }
+            )
+        })
+        .then(() =>{
+            this.$emit("complete",this.project.id);
         })
         .catch((err) => {
             console.log(err);
@@ -71,5 +92,7 @@ export default {
         cursor: pointer;
     }
 
-
+    .complete{
+        border-left-color: green;
+    }
 </style>
