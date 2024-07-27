@@ -3,7 +3,7 @@
         <div class="flexing">
             <div><h3 @click="showDetail = !showDetail">{{project.title}}</h3></div>
             <div class="icon-con">
-                <i class="fa-solid fa-trash"></i>
+                <i class="fa-solid fa-trash" @click="deleteProject"></i>
                 <i class="fa-solid fa-pen-to-square"></i>
                 <i class="fa-regular fa-square-check"></i>
             </div>
@@ -20,8 +20,22 @@ export default {
 
     data(){
         return{
-            showDetail : false
+            showDetail : false,
+            api : 'http://localhost:3000/projects/'
         }
+    },
+
+    methods:{
+       deleteProject(){
+        let deleteRoute = this.api+this.project.id;
+        fetch(deleteRoute,{method:"DELETE"})
+        .then(() => {
+            this.$emit("delete",this.project.id)
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+       }
     }
 }
 </script>

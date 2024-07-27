@@ -2,7 +2,7 @@
   <div class="home">
     <h1>Home</h1>
     <div v-for="project in projects" :key="project.id">
-      <SingleProject :project="project"></SingleProject>
+      <SingleProject :project="project" @delete="deleteProject"></SingleProject>
     </div>
   </div>
 </template>
@@ -23,17 +23,25 @@ export default {
     }
   },
 
-  mounted(){
-    fetch('http://localhost:3000/projects')
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      this.projects = data;
-    })
-    .catch(() => {
+  methods:{
+    deleteProject(id){
+      this.projects = this.projects.filter(project => {
+        return project.id != id;
+      })
+    }
+  },
 
-    })
+  mounted(){
+      fetch('http://localhost:3000/projects')
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.projects = data;
+      })
+      .catch(() => {
+
+      })
   }
 }
 </script>
