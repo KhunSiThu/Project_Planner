@@ -4,7 +4,9 @@
             <div><h3 @click="showDetail = !showDetail">{{project.title}}</h3></div>
             <div class="icon-con">
                 <i class="fa-solid fa-trash" @click="deleteProject"></i>
-                <i class="fa-solid fa-pen-to-square"></i>
+                <router-link :to="{name:'EditProject',params:{id:project.id}}">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </router-link>
                 <i class="fa-regular fa-square-check"  @click="completeProject"></i>
             </div>
         </div>
